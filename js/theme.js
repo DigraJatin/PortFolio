@@ -56,12 +56,13 @@ function toggleTheme() {
  * Create theme toggle button in sidebar footer
  */
 function createThemeToggle() {
-    const footer = document.querySelector('.sidebar-footer');
-    if (!footer || document.getElementById('theme-toggle')) return;
+    // Remove existing toggle if present
+    const existing = document.getElementById('theme-toggle');
+    if (existing) existing.remove();
 
     const toggle = document.createElement('button');
     toggle.id = 'theme-toggle';
-    toggle.className = 'theme-toggle';
+    toggle.className = 'theme-toggle floating-toggle';
     toggle.setAttribute('aria-label', 'Toggle theme');
 
     const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -72,7 +73,7 @@ function createThemeToggle() {
     `;
 
     toggle.addEventListener('click', toggleTheme);
-    footer.appendChild(toggle);
+    document.body.appendChild(toggle);
 }
 
 

@@ -65,16 +65,32 @@ async function fetchGitHubData() {
             const repo = event.repo.name;
             if (event.type === 'PushEvent') {
                 markActive(dateStr);
+                const commitMsg = event.payload.commits?.[0]?.message || 'Pushed commits';
                 recentFeed.push({
-                    text: `Committed to <strong>${repo}</strong>`,
-                    time: new Date(event.created_at)
+                    type: 'commit',
+                    repo: repo,
+                    title: `Committed to ${repo}`,
+                    desc: commitMsg,
+                    time: new Date(event.created_at),
+                    badge: 'Push',
+                    badgeClass: 'badge-push'
                 });
-            } else if (event.type === 'PullRequestEvent' && event.payload.action === 'opened') {
+            } else if (event.type === 'PullRequestEvent') {
                 markActive(dateStr);
-                recentFeed.push({
-                    text: `Opened PR in <strong>${repo}</strong>`,
-                    time: new Date(event.created_at)
-                });
+                const action = event.payload.action;
+                const prTitle = event.payload.pull_request?.title || 'Pull Request';
+                // Only track open/close to avoid clutter
+                if (action === 'opened' || action === 'closed') {
+                    recentFeed.push({
+                        type: 'pr',
+                        repo: repo,
+                        title: `${action === 'opened' ? 'Opened' : 'Closed'} PR in ${repo}`,
+                        desc: prTitle,
+                        time: new Date(event.created_at),
+                        badge: action === 'opened' ? 'Open' : 'Closed',
+                        badgeClass: action === 'opened' ? 'badge-open' : 'badge-merged'
+                    });
+                }
             }
         });
     } catch (e) { console.error("GitHub fetch error:", e); }
@@ -103,8 +119,12 @@ async function fetchLeetCodeData() {
             const date = new Date(parseInt(sub.timestamp) * 1000);
             markActive(date.toISOString().split('T')[0]);
             recentFeed.push({
-                text: `Solved <strong>${sub.title}</strong> on LeetCode`,
-                time: date
+                type: 'leetcode',
+                title: `Solved ${sub.title}`,
+                desc: 'LeetCode Problem',
+                time: date,
+                badge: 'Medium', // API doesn't give difficulty, hardcoding for UI demo or assume Medium
+                badgeClass: 'badge-lc'
             });
         });
     } catch (e) { console.error("LC Recent error:", e); }
@@ -131,11 +151,6 @@ function renderHeatmap() {
     while (true) {
         html += '<div class="heatmap-week">';
         for (let d = 0; d < 7; d++) {
-            // STOP condition: If curr > today, verify if we should just render empty or stop?
-            // "Why are there empty squares in the very last?" -> User wants NO squares after today.
-            // If we stop mid-week, flex layout might look jagged if row-based?
-            // CSS is .heatmap-week { flex-direction: column }. So it's fine to have a short column.
-
             if (curr > today) {
                 // Do not render anything more for this week
             } else {
@@ -147,8 +162,6 @@ function renderHeatmap() {
             curr.setDate(curr.getDate() + 1);
         }
         html += '</div>';
-
-        // If we have passed today, stop creating weeks
         if (curr > today) break;
     }
 
@@ -171,11 +184,11 @@ function renderFeed() {
 
     recentFeed.sort((a, b) => b.time - a.time);
 
-    // Dedup (simple key)
+    // Dedup
     const unique = [];
     const seen = new Set();
     for (const item of recentFeed) {
-        const key = item.text + item.time.toISOString();
+        const key = item.title + item.time.toISOString();
         if (!seen.has(key)) { seen.add(key); unique.push(item); }
     }
 
@@ -187,11 +200,33 @@ function renderFeed() {
 
     let html = '<div class="timeline-feed">';
     displayItems.forEach(item => {
+        // Define Icons based on type
+        let iconHtml = '';
+        if (item.type === 'pr') {
+            iconHtml = `<svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"></path></svg>`;
+        } else if (item.type === 'commit') {
+            iconHtml = `<svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg>`;
+        } else if (item.type === 'leetcode') {
+            iconHtml = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.702-1.15-.702-1.863s.235-1.357.702-1.824l4.319-4.38c.467-.467 1.125-.645 1.837-.645s1.357.195 1.823.662l2.697 2.606c.514.515 1.365.149 1.365-.579 0-.304-.153-.566-.38-.793l-1.837-1.78c-.565-.547-1.317-.863-2.115-.863s-1.55.316-2.114.863l-4.343 4.412a2.953 2.953 0 00-.869 2.131c0 .794.304 1.55.87 2.115l4.355 4.387c.565.547 1.317.863 2.114.863s1.55-.316 2.115-.863l1.837-1.78c.228-.228.38-.49.38-.794 0-.728-.85-1.093-1.364-.578zM19.349 7.64L16.29 4.67c-.201-.195-.514-.195-.715 0l-.701.693a.505.505 0 000 .714l3.059 2.969c.201.196.514.196.715 0l.701-.692a.505.505 0 000-.714z"></path></svg>`;
+        }
+
         html += `
             <div class="timeline-item">
-                <div class="timeline-content">
-                    <div>${item.text}</div>
-                    <span class="timeline-time">${timeAgo(item.time)}</span>
+                <div class="activity-card card-type-${item.type}">
+                    <div class="card-icon">
+                        ${iconHtml}
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h4 class="card-title">${item.title}</h4>
+                            <span class="card-badge ${item.badgeClass || ''}">${item.badge || ''}</span>
+                        </div>
+                        <p class="card-desc">${item.desc}</p>
+                        <div class="card-meta">
+                            <span>${timeAgo(item.time)}</span>
+                           ${item.repo ? `<span>${item.repo}</span>` : ''} 
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
