@@ -1,14 +1,13 @@
 /**
  * =============================================================================
- * ACTIVITY.JS - Unified GitHub + LeetCode Activity Tracker
+ * ACTIVITY.JS - Binary Heatmap & Activity Feed
  * =============================================================================
- * Tracks: GitHub commits, GitHub PRs, LeetCode problems solved
- * Single heatmap: green = any activity, dark = no activity
- * Recent activity feed with time-ago formatting
+ * - Heatmap: Binary (Active/Inactive). Last 365 days ending TODAY.
+ * - Feed: Timeline style.
+ * - Data: GitHub Events + LeetCode Calendar/Recent.
  * =============================================================================
  */
 
-// Configuration
 const CONFIG = {
     github: {
         username: 'DigraJatin',
@@ -16,366 +15,205 @@ const CONFIG = {
     },
     leetcode: {
         username: 'jatindigra',
-        // Using public proxy for LeetCode data since official API has no CORS
-        apiUrl: 'https://leetcode-stats-api.herokuapp.com/jatindigra'
+        calendarUrl: 'https://alfa-leetcode-api.onrender.com/userProfileCalendar/jatindigra',
+        recentUrl: 'https://alfa-leetcode-api.onrender.com/jatindigra/acSubmission'
     }
 };
 
-// Store activity data globally
-let activityData = {};
-let recentActivities = [];
+let dailyActivity = {};
+let recentFeed = [];
 
-
-/**
- * Initialize activity page
- */
 async function initActivity() {
     showLoading();
-
+    initCalendarGrid();
     try {
-        // Fetch GitHub data (real API)
-        const githubEvents = await fetchGitHubEvents();
-        processGitHubEvents(githubEvents);
+        await Promise.all([fetchGitHubData(), fetchLeetCodeData()]);
+    } catch (e) {
+        console.error("Partial data fetch error:", e);
+    }
+    renderHeatmap();
+    renderFeed();
+}
 
-        // Fetch LeetCode data (proxy API)
-        const leetcodeData = await fetchLeetCodeData();
-        if (leetcodeData && leetcodeData.status === 'success') {
-            processLeetCodeData(leetcodeData);
-        } else {
-            console.warn('LeetCode API returned error or empty data');
-        }
-
-        // Render unified heatmap
-        renderUnifiedHeatmap();
-
-        // Render recent activity feed
-        renderActivityFeed();
-
-    } catch (error) {
-        console.error('Failed to load activity:', error);
-        // Still render what we have
-        renderUnifiedHeatmap();
-        renderActivityFeed();
+/**
+ * Empty calendar for last 365 days
+ */
+function initCalendarGrid() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 366; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        dailyActivity[dateStr] = { active: false };
     }
 }
 
+function markActive(dateStr) {
+    if (dailyActivity[dateStr]) dailyActivity[dateStr].active = true;
+}
 
-/**
- * Fetch GitHub public events
- * Returns last 30 events (API default)
- */
-async function fetchGitHubEvents() {
+async function fetchGitHubData() {
     try {
-        const response = await fetch(CONFIG.github.apiUrl, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
+        const res = await fetch(CONFIG.github.apiUrl);
+        if (!res.ok) throw new Error("GitHub API failed");
+        const events = await res.json();
+        if (!Array.isArray(events)) return;
+
+        events.forEach(event => {
+            const dateStr = event.created_at.split('T')[0];
+            const repo = event.repo.name;
+            if (event.type === 'PushEvent') {
+                markActive(dateStr);
+                recentFeed.push({
+                    text: `Committed to <strong>${repo}</strong>`,
+                    time: new Date(event.created_at)
+                });
+            } else if (event.type === 'PullRequestEvent' && event.payload.action === 'opened') {
+                markActive(dateStr);
+                recentFeed.push({
+                    text: `Opened PR in <strong>${repo}</strong>`,
+                    time: new Date(event.created_at)
+                });
             }
         });
-
-        if (!response.ok) {
-            throw new Error(`GitHub API error: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (e) {
-        console.error("GitHub fetch failed", e);
-        return [];
-    }
+    } catch (e) { console.error("GitHub fetch error:", e); }
 }
 
-
-/**
- * Fetch LeetCode data via proxy
- */
 async function fetchLeetCodeData() {
     try {
-        const response = await fetch(CONFIG.leetcode.apiUrl);
-        if (!response.ok) {
-            throw new Error(`LeetCode API error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (e) {
-        console.error("LeetCode fetch failed", e);
-        return null;
-    }
-}
-
-
-/**
- * Process GitHub events into activity data
- */
-function processGitHubEvents(events) {
-    if (!Array.isArray(events)) return;
-
-    events.forEach(event => {
-        const date = event.created_at.split('T')[0];
-        const time = new Date(event.created_at);
-
-        if (!activityData[date]) {
-            activityData[date] = { hasActivity: false, events: [] };
-        }
-
-        if (event.type === 'PushEvent') {
-            // Commits
-            const commits = event.payload.commits || [];
-            const repoName = event.repo.name.split('/')[1];
-
-            activityData[date].hasActivity = true;
-
-            commits.forEach(commit => {
-                activityData[date].events.push({
-                    type: 'commit',
-                    message: commit.message.split('\n')[0],
-                    repo: repoName
-                });
-
-                recentActivities.push({
-                    type: 'commit',
-                    icon: '📝',
-                    text: `Committed to <a href="https://github.com/${event.repo.name}" target="_blank">${repoName}</a>`,
-                    detail: commit.message.split('\n')[0],
-                    time: time
-                });
+        const calRes = await fetch(CONFIG.leetcode.calendarUrl);
+        const calData = await calRes.json();
+        if (calData?.data?.matchedUser?.submissionCalendar) {
+            const calendar = JSON.parse(calData.data.matchedUser.submissionCalendar);
+            Object.keys(calendar).forEach(ts => {
+                if (calendar[ts] > 0) {
+                    const date = new Date(parseInt(ts) * 1000);
+                    markActive(date.toISOString().split('T')[0]);
+                }
             });
-
-        } else if (event.type === 'PullRequestEvent') {
-            // Pull Requests
-            const action = event.payload.action;
-            const pr = event.payload.pull_request;
-            const repoName = event.repo.name.split('/')[1];
-
-            if (action === 'opened' || action === 'closed') {
-                activityData[date].hasActivity = true;
-                activityData[date].events.push({
-                    type: 'pr',
-                    action: action,
-                    title: pr.title,
-                    repo: repoName
-                });
-
-                recentActivities.push({
-                    type: 'pr',
-                    icon: '🔀',
-                    text: `${action === 'opened' ? 'Opened' : 'Merged'} PR in <a href="https://github.com/${event.repo.name}" target="_blank">${repoName}</a>`,
-                    detail: pr.title,
-                    time: time
-                });
-            }
         }
-    });
+    } catch (e) { console.error("LC Calendar error:", e); }
+
+    try {
+        const recentRes = await fetch(CONFIG.leetcode.recentUrl);
+        const recentData = await recentRes.json();
+        const submissions = recentData.submission || [];
+        submissions.forEach(sub => {
+            const date = new Date(parseInt(sub.timestamp) * 1000);
+            markActive(date.toISOString().split('T')[0]);
+            recentFeed.push({
+                text: `Solved <strong>${sub.title}</strong> on LeetCode`,
+                time: date
+            });
+        });
+    } catch (e) { console.error("LC Recent error:", e); }
 }
 
-
-/**
- * Process LeetCode data from proxy
- * Note: The proxy mainly returns stats. Calendar data is sometimes limited.
- * We'll use the 'submissionCalendar' if available, otherwise just total solved count won't fit on heatmap well.
- * The heroku proxy returns `submissionCalendar` which is a map of unix timestamp -> count.
- */
-function processLeetCodeData(data) {
-    if (!data || !data.submissionCalendar) return;
-
-    const calendar = data.submissionCalendar;
-
-    Object.keys(calendar).forEach(timestamp => {
-        // Timestamp from this API is in seconds
-        const dateObj = new Date(parseInt(timestamp) * 1000);
-        const dateStr = dateObj.toISOString().split('T')[0];
-        const count = calendar[timestamp];
-
-        if (!activityData[dateStr]) {
-            activityData[dateStr] = { hasActivity: false, events: [] };
-        }
-
-        if (count > 0) {
-            activityData[dateStr].hasActivity = true;
-
-            // We don't have problem details from this endpoint, just counts
-            for (let i = 0; i < count; i++) {
-                activityData[dateStr].events.push({
-                    type: 'leetcode',
-                    name: 'LeetCode Problem',
-                    difficulty: 'Unknown'
-                });
-            }
-
-            // Add to recent activity only if it's recent (last 3 days)
-            // But checking exact time is hard with just day timestamp
-            // So we'll skip adding specific items to recent feed from this aggregate source
-            // to avoid spamming "Solved LeetCode Problem" 100 times.
-            // A better specialized endpoint would be needed for recent feed details.
-        }
-    });
-
-    // Add a summary item for LeetCode
-    recentActivities.push({
-        type: 'leetcode',
-        icon: '💡',
-        text: `Solved ${data.totalSolved} problems on LeetCode`,
-        detail: `Easy: ${data.easySolved} | Medium: ${data.mediumSolved} | Hard: ${data.hardSolved}`,
-        time: new Date() // Just show it at top
-    });
-}
-
-
-/**
- * Render unified heatmap
- */
-function renderUnifiedHeatmap() {
+function renderHeatmap() {
     const container = document.getElementById('unified-heatmap');
     if (!container) return;
 
+    // STRICT: Stop at today.
     const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - 364);
+    today.setHours(0, 0, 0, 0);
 
-    // Adjust to start on Sunday
+    // Start roughly 52 weeks ago on a Sunday
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - 364);
     const dayOfWeek = startDate.getDay();
     startDate.setDate(startDate.getDate() - dayOfWeek);
 
     let html = '<div class="heatmap">';
+    const curr = new Date(startDate);
 
-    const currentDate = new Date(startDate);
-    while (currentDate <= today) {
+    // Loop week by week
+    while (true) {
         html += '<div class="heatmap-week">';
+        for (let d = 0; d < 7; d++) {
+            // STOP condition: If curr > today, verify if we should just render empty or stop?
+            // "Why are there empty squares in the very last?" -> User wants NO squares after today.
+            // If we stop mid-week, flex layout might look jagged if row-based?
+            // CSS is .heatmap-week { flex-direction: column }. So it's fine to have a short column.
 
-        for (let day = 0; day < 7; day++) {
-            const dateStr = currentDate.toISOString().split('T')[0];
-            const activity = activityData[dateStr];
-            const hasActivity = activity && activity.hasActivity;
-
-            // Calculate opacity based on count for green shades
-            let opacity = 0.4; // default active
-            if (hasActivity) {
-                const count = activity.events.length;
-                if (count > 4) opacity = 1.0;
-                else if (count > 2) opacity = 0.8;
-                else if (count > 0) opacity = 0.6;
+            if (curr > today) {
+                // Do not render anything more for this week
+            } else {
+                const dateStr = curr.toISOString().split('T')[0];
+                const isActive = dailyActivity[dateStr] && dailyActivity[dateStr].active;
+                const title = `${curr.toLocaleDateString()}: ${isActive ? 'Active' : 'Inactive'}`;
+                html += `<div class="heatmap-day ${isActive ? 'active' : ''}" title="${title}"></div>`;
             }
-
-            // Apply style directly for simple opacity handling or use classes
-            const style = hasActivity ? `style="background-color: rgba(57, 211, 83, ${opacity})"` : '';
-
-            html += `
-                <div class="heatmap-day ${hasActivity ? 'active' : 'inactive'}" 
-                     data-date="${dateStr}"
-                     ${style}
-                     title="${formatDateForTooltip(dateStr, activity)}">
-                </div>
-            `;
-
-            currentDate.setDate(currentDate.getDate() + 1);
+            curr.setDate(curr.getDate() + 1);
         }
-
         html += '</div>';
+
+        // If we have passed today, stop creating weeks
+        if (curr > today) break;
     }
 
     html += '</div>';
 
-    // Legend
     html += `
         <div class="heatmap-legend">
-            <span>No activity</span>
-            <span class="heatmap-legend-item inactive" style="background-color: var(--heatmap-0);"></span>
-            <span class="heatmap-legend-item" style="background-color: rgba(57, 211, 83, 0.4);"></span>
-            <span class="heatmap-legend-item" style="background-color: rgba(57, 211, 83, 0.7);"></span>
-            <span class="heatmap-legend-item" style="background-color: rgba(57, 211, 83, 1.0);"></span>
+            <span>Inactive</span>
+            <span class="heatmap-day" style="background-color: var(--heatmap-0);"></span>
+            <span class="heatmap-day active"></span>
             <span>Active</span>
         </div>
     `;
-
     container.innerHTML = html;
 }
 
-
-/**
- * Format date for tooltip
- */
-function formatDateForTooltip(dateStr, activity) {
-    const date = new Date(dateStr);
-    const formatted = date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
-    });
-
-    if (!activity || !activity.hasActivity) {
-        return `${formatted}: No activity`;
-    }
-
-    const count = activity.events.length;
-    return `${formatted}: ${count} activit${count === 1 ? 'y' : 'ies'}`;
-}
-
-
-/**
- * Render recent activity feed
- */
-function renderActivityFeed() {
+function renderFeed() {
     const container = document.getElementById('activity-feed');
     if (!container) return;
 
-    // Sort by time descending
-    recentActivities.sort((a, b) => b.time - a.time);
+    recentFeed.sort((a, b) => b.time - a.time);
 
-    // Take top 10
-    const recent = recentActivities.slice(0, 10);
+    // Dedup (simple key)
+    const unique = [];
+    const seen = new Set();
+    for (const item of recentFeed) {
+        const key = item.text + item.time.toISOString();
+        if (!seen.has(key)) { seen.add(key); unique.push(item); }
+    }
 
-    if (recent.length === 0) {
-        container.innerHTML = '<p class="text-muted">No recent activity found.</p>';
+    const displayItems = unique.slice(0, 10);
+    if (displayItems.length === 0) {
+        container.innerHTML = '<p class="text-muted">No recent activity.</p>';
         return;
     }
 
-    let html = '<ul class="activity-feed-list">';
-
-    recent.forEach(activity => {
+    let html = '<div class="timeline-feed">';
+    displayItems.forEach(item => {
         html += `
-            <li class="activity-feed-item">
-                <div class="activity-feed-icon">${activity.icon}</div>
-                <div class="activity-feed-content">
-                    <div class="activity-feed-text">${activity.text}</div>
-                    <div class="activity-feed-time">${timeAgo(activity.time)}</div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div>${item.text}</div>
+                    <span class="timeline-time">${timeAgo(item.time)}</span>
                 </div>
-            </li>
+            </div>
         `;
     });
-
-    html += '</ul>';
+    html += '</div>';
     container.innerHTML = html;
 }
 
-
-/**
- * Format time as "X hours ago" style
- */
 function timeAgo(date) {
-    const now = new Date();
-    const diff = now - date;
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) return `${days} day${days === 1 ? '' : 's'} ago`;
-    if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-    return 'just now';
+    const s = Math.floor((new Date() - date) / 1000);
+    if (s < 60) return "just now";
+    const m = Math.floor(s / 60);
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    const d = Math.floor(h / 24);
+    return `${d}d ago`;
 }
 
-
-/**
- * Show loading state
- */
 function showLoading() {
-    const heatmap = document.getElementById('unified-heatmap');
-    const feed = document.getElementById('activity-feed');
-
-    if (heatmap) heatmap.innerHTML = '<p class="text-muted">Loading activity...</p>';
-    if (feed) feed.innerHTML = '<p class="text-muted">Loading recent activity...</p>';
+    const h = document.getElementById('unified-heatmap');
+    if (h) h.innerHTML = '<p class="text-muted">Loading...</p>';
 }
 
-
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initActivity };
-}
+document.addEventListener('DOMContentLoaded', initActivity);

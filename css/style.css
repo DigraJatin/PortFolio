@@ -66,27 +66,44 @@
 /* -----------------------------------------------------------------------------
  * LIGHT THEME
  * -------------------------------------------------------------------------- */
+/* VS Classic Blue/Grey Theme */
+/* VS Classic Blue/Grey Theme */
 [data-theme="light"] {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f6f8fa;
-    --bg-tertiary: #eaeef2;
-    --bg-canvas: #ffffff;
+    --bg-primary: #f0f2f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e1e4e8;
+    --bg-canvas: #f0f2f5;
 
-    --text-primary: #1f2328;
-    --text-secondary: #656d76;
-    --text-muted: #8c959f;
+    --text-primary: #24292f;
+    --text-secondary: #57606a;
+    --text-muted: #6e7781;
 
     --border-color: #d0d7de;
-    --border-light: #d8dee4;
+    --border-light: #e1e4e8;
 
-    --accent-color: #0969da;
-    --accent-hover: #0550ae;
+    --accent-color: #0078d7;
+    /* VS Blue */
+    --accent-hover: #005a9e;
     --accent-green: #1a7f37;
 
     --heatmap-0: #ebedf0;
-    --heatmap-active: #40c463;
+    --heatmap-active: #2da44e;
+    /* GitHub Green */
 
     --code-bg: #f6f8fa;
+
+    /* Depth */
+    --sidebar-shadow: 1px 0 12px rgba(0, 0, 0, 0.08);
+    /* Soft shadow */
+    --bg-pattern: radial-gradient(#d0d7de 1px, transparent 1px);
+}
+
+[data-theme="dark"] {
+    /* ... existing dark mode vars ... */
+    --sidebar-shadow: none;
+    /* Flat in dark mode usually, or subtle */
+    --bg-pattern: none;
+    /* Stars handled via div */
 }
 
 
@@ -382,21 +399,73 @@ li {
 }
 
 .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-right: var(--spacing-sm);
     width: 20px;
-    text-align: center;
-    font-size: 14px;
+    height: 20px;
+    color: var(--text-secondary);
+}
+
+.nav-link.active .nav-icon {
+    color: var(--accent-color);
+}
+
+.nav-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    stroke: currentColor;
+    fill: none;
 }
 
 .sidebar-footer {
-    margin-top: auto;
-    padding-top: var(--spacing-lg);
     border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Explicit gap */
+    height: 60px;
+    padding-left: 5px;
+    /* Minor adjustment */
 }
 
 .sidebar-footer a {
-    font-size: var(--font-size-sm);
-    margin-right: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Force LeetCode image to match font icons exactly */
+.sidebar-footer img {
+    display: block;
+    width: 20px !important;
+    height: 20px !important;
+    object-fit: contain;
+    filter: grayscale(100%);
+    /* Match icon style */
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.sidebar-footer a:hover img {
+    opacity: 1;
+    filter: none;
+}
+
+.sidebar-footer i {
+    font-size: 20px;
+    /* Force consistent icon size */
+    display: block;
 }
 
 
@@ -752,12 +821,17 @@ li code {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    overflow-x: auto;
+    /* overflow-x: auto; Removed for cleaner look, simpler grid */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Align left */
 }
 
 .heatmap {
     display: flex;
     gap: 3px;
+    /* Wrap to fit if needed, but horizontal usually preferred */
 }
 
 .heatmap-week {
@@ -767,24 +841,16 @@ li code {
 }
 
 .heatmap-day {
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     border-radius: 2px;
     cursor: pointer;
-    transition: transform 0.1s ease;
-}
-
-.heatmap-day:hover {
-    transform: scale(1.3);
-    outline: 1px solid var(--text-muted);
-}
-
-.heatmap-day.inactive {
     background-color: var(--heatmap-0);
 }
 
 .heatmap-day.active {
     background-color: var(--heatmap-active);
+    /* Green */
 }
 
 .heatmap-legend {
@@ -990,4 +1056,52 @@ li code {
 
 .visible {
     display: block;
+}
+
+/* -----------------------------------------------------------------------------
+ * TIMELINE - RECENT ACTIVITY
+ * -------------------------------------------------------------------------- */
+.timeline-feed {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid var(--border-color);
+    margin-left: 10px;
+    margin-top: 20px;
+    list-style: none;
+    /* remove default bullets */
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    /* Align with border line */
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--bg-primary);
+    border: 2px solid var(--text-muted);
+}
+
+.timeline-content {
+    background-color: var(--bg-secondary);
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    /* Subtle depth */
+}
+
+.timeline-time {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 4px;
 }
