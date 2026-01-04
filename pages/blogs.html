@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs | Jatin</title>
+    <meta name="description" content="Technical blog posts about C++, systems programming, and Windows development.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <!-- Starry Background -->
+    <div class="stars"></div>
+
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation">☰</button>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Jatin</div>
+                <div class="sidebar-subtitle">Software Engineer</div>
+            </div>
+
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link">
+                            <span class="nav-icon">~</span> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="blogs.html" class="nav-link active">
+                            <span class="nav-icon">📁</span> Blogs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">
+                            <span class="nav-icon">◇</span> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="activity.html" class="nav-link">
+                            <span class="nav-icon">◈</span> Activity
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/DigraJatin" target="_blank">GitHub</a>
+                <a href="https://leetcode.com/jatindigra" target="_blank">LeetCode</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>Blog</h1>
+            <p class="text-secondary mb-lg">
+                Technical notes and deep-dives into C++, systems programming, and Windows internals.
+            </p>
+
+            <!-- C++ Category -->
+            <section class="section">
+                <h2 class="section-title">C++</h2>
+                <ul class="blog-list">
+                    <li class="blog-item">
+                        <a href="blog-post.html?category=cpp&slug=understanding-move-semantics" class="blog-title">
+                            Understanding Move Semantics in Modern C++
+                        </a>
+                        <div class="blog-meta">December 15, 2024</div>
+                        <p class="blog-excerpt">
+                            A deep dive into move semantics, rvalue references, and how they
+                            improve performance in C++11 and beyond.
+                        </p>
+                    </li>
+                    <li class="blog-item">
+                        <a href="#" class="blog-title">A Practical Guide to Smart Pointers</a>
+                        <div class="blog-meta">November 20, 2024</div>
+                        <p class="blog-excerpt">
+                            When to use unique_ptr, shared_ptr, and weak_ptr — with real-world examples.
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Systems Category -->
+            <section class="section">
+                <h2 class="section-title">Systems Programming</h2>
+                <ul class="blog-list">
+                    <li class="blog-item">
+                        <a href="blog-post.html?category=systems&slug=windows-debugging-with-windbg" class="blog-title">
+                            Windows Debugging with WinDBG
+                        </a>
+                        <div class="blog-meta">December 1, 2024</div>
+                        <p class="blog-excerpt">
+                            Essential WinDBG commands and techniques for debugging Windows
+                            applications and crash dumps.
+                        </p>
+                    </li>
+                    <li class="blog-item">
+                        <a href="#" class="blog-title">Understanding Windows Process Architecture</a>
+                        <div class="blog-meta">October 15, 2024</div>
+                        <p class="blog-excerpt">
+                            How processes work on Windows: from creation to termination.
+                        </p>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/theme.js"></script>
+</body>
+
+</html>

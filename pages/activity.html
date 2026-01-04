@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity | Jatin</title>
+    <meta name="description" content="Coding activity and contributions by Jatin.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <!-- Starry Background -->
+    <div class="stars"></div>
+
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation">☰</button>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Jatin</div>
+                <div class="sidebar-subtitle">Software Engineer</div>
+            </div>
+
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link">
+                            <span class="nav-icon">~</span> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="blogs.html" class="nav-link">
+                            <span class="nav-icon">📁</span> Blogs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">
+                            <span class="nav-icon">◇</span> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="activity.html" class="nav-link active">
+                            <span class="nav-icon">◈</span> Activity
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/DigraJatin" target="_blank" title="GitHub">
+                    <i class="devicon-github-original" style="font-size: 20px;"></i>
+                </a>
+                <a href="https://leetcode.com/jatindigra" target="_blank" title="LeetCode">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png"
+                        alt="LeetCode" style="width: 20px; height: 20px; filter: invert(1);">
+                </a>
+                <a href="mailto:your.email@example.com" title="Email Me">
+                    <span style="font-size: 20px;">✉️</span>
+                </a>
+                <!-- Theme toggle will be added here by JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>Activity</h1>
+            <p class="text-secondary mb-lg">
+                Coding activity from GitHub and LeetCode. Green squares indicate days with commits, PRs, or problems
+                solved.
+            </p>
+
+            <!-- Unified Heatmap -->
+            <section class="activity-section">
+                <div class="activity-header">
+                    <h2>Contribution Heatmap</h2>
+                    <span class="text-muted text-sm">Past year</span>
+                </div>
+                <div id="unified-heatmap" class="heatmap-container">
+                    <p class="text-muted text-sm">Loading activity...</p>
+                </div>
+            </section>
+
+            <!-- Recent Activity Feed -->
+            <section class="activity-feed">
+                <h3 class="activity-feed-title">Recent Activity</h3>
+                <div id="activity-feed">
+                    <p class="text-muted text-sm">Loading recent activity...</p>
+                </div>
+            </section>
+
+            <!-- Note about LeetCode -->
+            <p class="text-muted text-sm mt-lg" style="font-style: italic;">
+                Note: LeetCode data is demo only (no public API). GitHub data is fetched live from
+                <a href="https://github.com/DigraJatin" target="_blank">@DigraJatin</a>.
+            </p>
+        </main>
+    </div>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/activity.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initActivity);
+    </script>
+</body>
+
+</html>

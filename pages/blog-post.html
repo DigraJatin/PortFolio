@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post | Jatin</title>
+    <meta name="description" content="Technical blog post by Jatin.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <!-- Starry Background -->
+    <div class="stars"></div>
+
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation">☰</button>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Jatin</div>
+                <div class="sidebar-subtitle">Software Engineer</div>
+            </div>
+
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link">
+                            <span class="nav-icon">~</span> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="blogs.html" class="nav-link active">
+                            <span class="nav-icon">📁</span> Blogs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">
+                            <span class="nav-icon">◇</span> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="activity.html" class="nav-link">
+                            <span class="nav-icon">◈</span> Activity
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/DigraJatin" target="_blank">GitHub</a>
+                <a href="https://leetcode.com/jatindigra" target="_blank">LeetCode</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="mb-lg">
+                <a href="blogs.html" style="font-size: var(--font-size-sm);">← Back to all posts</a>
+            </div>
+
+            <article class="blog-post">
+                <header class="blog-post-header">
+                    <h1 id="blog-title" class="blog-post-title">Loading...</h1>
+                    <div id="blog-date" class="blog-meta"></div>
+                </header>
+
+                <div id="blog-content" class="blog-post-content">
+                    <p class="text-muted">Loading blog post...</p>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/blog.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initBlogPost);
+    </script>
+</body>
+
+</html>
