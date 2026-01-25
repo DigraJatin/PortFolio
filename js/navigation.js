@@ -36,8 +36,12 @@ function initActiveNavigation() {
 
     // Extract just the filename (e.g., "blogs.html" or "index.html")
     // Split by '/' and get the last part
-    const pathParts = currentPath.split('/');
-    const currentPage = pathParts[pathParts.length - 1] || 'index.html';
+    let currentPage = pathParts[pathParts.length - 1] || 'index.html';
+
+    // Normalize empty or root path to index.html for matching logic
+    if (currentPage === '' || currentPage === '/') {
+        currentPage = 'index.html';
+    }
 
     // Find all navigation links
     const navLinks = document.querySelectorAll('.nav-link');
@@ -48,13 +52,15 @@ function initActiveNavigation() {
 
         // Extract filename from href
         const hrefParts = href.split('/');
-        const linkPage = hrefParts[hrefParts.length - 1];
+        let linkPage = hrefParts[hrefParts.length - 1];
+
+        // Normalize linkPage (e.g., if href is "../" or "./")
+        if (linkPage === '' || linkPage === '.') {
+            linkPage = 'index.html';
+        }
 
         // Check if this link matches current page
-        // Handle both "index.html" and empty string (root path)
-        if (linkPage === currentPage ||
-            (currentPage === '' && linkPage === 'index.html') ||
-            (currentPage === 'index.html' && href.endsWith('index.html'))) {
+        if (linkPage === currentPage) {
             link.classList.add('active');
         }
     });

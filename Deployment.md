@@ -76,3 +76,55 @@ git add .
 git commit -m "Describe your changes"
 git push origin main
 ```
+
+## Step 5: (Optional) Using a Custom Domain
+
+If you own a custom domain (e.g., `yourname.com`) and want to use it for your portfolio instead of the `digrajatin.github.io` address, you can configure it in the GitHub Pages settings.
+
+### What to put in the "Custom domain" field:
+
+In this field, you should enter the custom domain name that you own. For example, if you own `jatin.dev`, you would enter `jatin.dev` or `www.jatin.dev`.
+
+**Important**: Simply entering your domain name here is not enough. You must also configure your domain's DNS settings to point to GitHub's servers.
+
+### How to Configure Your Custom Domain
+
+1.  **Buy a domain name**: If you don't already own one, you need to purchase a domain name from a domain registrar like GoDaddy, Namecheap, or Google Domains.
+
+2.  **Enter your custom domain in GitHub Pages**:
+    *   Go to your repository's **Settings** > **Pages**.
+    *   In the **Custom domain** field, type your domain name (e.g., `www.yourdomain.com` or `yourdomain.com`).
+    *   Click **Save**. This will create a `CNAME` file in your repository with the domain name.
+
+3.  **Configure your DNS records**:
+    *   Log in to your domain registrar's website (where you bought your domain).
+    *   Go to the DNS management settings for your domain.
+    *   You need to create one of the following types of records:
+
+        *   **For a subdomain (like `www.yourdomain.com`)**: Create a `CNAME` record that points `www` to your default GitHub Pages URL (`<your-username>.github.io`).
+
+            | Type    | Name/Host | Value/Target                  |
+            |---------|-----------|-------------------------------|
+            | CNAME   | www       | `<your-username>.github.io`.  |
+
+        *   **For an apex domain (like `yourdomain.com`)**: Create `A` records that point your domain to GitHub's IP addresses.
+
+            | Type    | Name/Host | Value/Target        |
+            |---------|-----------|---------------------|
+            | A       | @         | `185.199.108.153`   |
+            | A       | @         | `185.199.109.153`   |
+            | A       | @         | `185.199.110.153`   |
+            | A       | @         | `185.199.111.153`   |
+
+            You may also want to create `AAAA` records for IPv6 support:
+
+            | Type    | Name/Host | Value/Target                      |
+            |---------|-----------|-----------------------------------|
+            | AAAA    | @         | `2606:50c0:8000::153`              |
+            | AAAA    | @         | `2606:50c0:8001::153`              |
+            | AAAA    | @         | `2606:50c0:8002::153`              |
+            | AAAA    | @         | `2606:50c0:8003::153`              |
+
+    **Note**: DNS changes can take some time to propagate across the internet (from a few minutes to 24-48 hours).
+
+4.  **Enforce HTTPS**: Once your custom domain is correctly configured and pointing to GitHub, you can enforce HTTPS for your site. In the GitHub Pages settings, check the **Enforce HTTPS** box. This ensures that your site is served securely over `https://`.
