@@ -34,13 +34,14 @@ function initActiveNavigation() {
     // Get current page path (e.g., "/pages/blogs.html" or "/index.html")
     const currentPath = window.location.pathname;
 
-    // Extract just the filename (e.g., "blogs.html" or "index.html")
+    // Extract just the filename (e.g., "blogs.html" or "home.html")
     // Split by '/' and get the last part
-    let currentPage = pathParts[pathParts.length - 1] || 'index.html';
+    const pathParts = currentPath.split('/');
+    let currentPage = pathParts[pathParts.length - 1] || 'home.html';
 
-    // Normalize empty or root path to index.html for matching logic
-    if (currentPage === '' || currentPage === '/') {
-        currentPage = 'index.html';
+    // Normalize empty, root, or index.html path to home.html for matching logic
+    if (currentPage === '' || currentPage === '/' || currentPage === 'index.html') {
+        currentPage = 'home.html';
     }
 
     // Find all navigation links
@@ -54,9 +55,9 @@ function initActiveNavigation() {
         const hrefParts = href.split('/');
         let linkPage = hrefParts[hrefParts.length - 1];
 
-        // Normalize linkPage (e.g., if href is "../" or "./")
-        if (linkPage === '' || linkPage === '.') {
-            linkPage = 'index.html';
+        // Normalize linkPage (e.g., if href is "../" or "./" or "index.html")
+        if (linkPage === '' || linkPage === '.' || linkPage === 'index.html') {
+            linkPage = 'home.html';
         }
 
         // Check if this link matches current page
