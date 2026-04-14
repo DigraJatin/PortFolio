@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jatin | Software Engineer - C++ & Systems Programming</title>
+    <title>Jatin | C++ Systems Engineer</title>
     <meta name="description"
-        content="Portfolio of Jatin, a Software Engineer at Zscaler specializing in C++, systems programming, and Windows internals.">
-    <link rel="stylesheet" href="css/style.css?v=1.2">
+        content="Portfolio of Jatin, a C++ Systems Engineer at Zscaler specializing in multithreading, networking, and Windows internals.">
+    <link rel="stylesheet" href="css/style.css?v=1.3">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 </head>
 
@@ -22,7 +22,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">Jatin</div>
-                <div class="sidebar-subtitle">Software Engineer</div>
+                <div class="sidebar-subtitle">C++ Systems Engineer</div>
             </div>
 
             <nav>
@@ -71,12 +71,12 @@
             <!-- Hero Section -->
             <section class="hero" id="intro">
                 <h1 class="hero-name">Jatin</h1>
-                <p class="hero-title">Software Engineer — C++ / Systems / Windows</p>
+                <p class="hero-title">C++ Systems Engineer — Multithreading / Networking / Windows Internals</p>
                 <p class="hero-intro">
-                    Software Engineer specializing in **Windows system-level development** with 3 years of experience. I
-                    build native, high-performance applications using **modern C++**, Win32, COM, and WinUI 3.
-                    Currently at <strong>Zscaler</strong>, I focus on building scalable, security-critical components
-                    with a deep emphasis on multithreading, IPC, and OS internals.
+                    C++ Systems Engineer specializing in multithreading, networking, and Windows internals, with
+                    experience building low-latency, high-throughput client systems. Currently at
+                    <strong>Zscaler</strong>, working on concurrency, IPC, and distributed communication patterns
+                    for security-critical desktop applications.
                 </p>
 
                 <div class="mt-lg" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -86,11 +86,15 @@
                     </a>
 
                     <!-- Social Links moved from Sidebar -->
+                    <a href="https://linkedin.com/in/jatin-5667431b6" target="_blank" class="btn">
+                        <i class="devicon-linkedin-plain"
+                            style="font-size: 20px; margin-right: 8px; color: var(--text-primary);"></i> LinkedIn
+                    </a>
                     <a href="https://github.com/DigraJatin" target="_blank" class="btn">
                         <i class="devicon-github-original"
                             style="font-size: 20px; margin-right: 8px; color: var(--text-primary);"></i> GitHub
                     </a>
-                    <a href="https://leetcode.com/jatindigra" target="_blank" class="btn"
+                    <a href="https://leetcode.com/u/jatindigra06" target="_blank" class="btn"
                         style="padding-left: 12px; padding-right: 12px;" title="LeetCode">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png"
                             alt="LeetCode" style="width: 20px; height: 20px; display: block;">
@@ -123,18 +127,14 @@
                         <div class="experience-date">August 2024 — Present</div>
                     </div>
                     <ul class="experience-description">
-                        <li>Designed and implemented a Windows-native notification framework in C++, supporting
-                            real-time security events.</li>
-                        <li>Developed a native Win32 C++ host embedding WebView (React-based UI) with bidirectional
-                            communication via HostObjects.</li>
-                        <li>Implemented secure client–cloud communication using REST APIs and persistent WebSocket
-                            connections over TLS/SSL.</li>
-                        <li>Applied dependency injection and factory design patterns to improve modularity, testability,
-                            and maintainability.</li>
-                        <li>Contributed to Redesigning Windows Client UI using WINUI3 and MVVM Design Pattern,</li>
-                        <li>Debugged and resolved authentication flow issues involving SSO and SAML in production.</li>
-                        <li>Worked extensively with large-scale C++ codebases, build systems, linking, and Windows
-                            debugging/tooling.</li>
+                        <li>Designed a high-performance C++ event delivery framework enabling real-time security updates across clients.</li>
+                        <li>Integrated SQLite (C++) as an in-memory data layer for notification workflows, enabling low-latency local persistence.</li>
+                        <li>Distributed as a vcpkg-managed library, ensuring modularity, versioning, and independent integration.</li>
+                        <li>Built low-latency bidirectional communication between native Win32 host and WebView UI using HostObjects.</li>
+                        <li>Implemented persistent WebSocket communication over TLS, reducing polling overhead and lowering update latency.</li>
+                        <li>Developed non-blocking workflows using modern C# (async/await, Task-based model), eliminating UI thread blocking.</li>
+                        <li>Revamped App UI using WinUI3 + MVVM architecture, designing asynchronous view-model interactions and scalable UI abstractions.</li>
+                        <li>Improved system modularity and testability using dependency injection and factory patterns.</li>
                     </ul>
                 </div>
 
@@ -146,29 +146,25 @@
                         <div class="experience-date">August 2023 — August 2024</div>
                     </div>
                     <ul class="experience-description">
-                        <li>Led migration from blocking RPC to asynchronous RPC, improving UI responsiveness and system
-                            scalability.</li>
-                        <li>Built concurrent C++ components using multithreading, mutexes, atomics, and lock-free
-                            constructs.</li>
-                        <li>Analyzed production crash dumps and fixed stability issues across multiple client releases.
-                        </li>
-                        <li>Automated regression and functional tests using PyTest, reducing repetitive manual testing.
-                        </li>
-                        <li>Delivered modern C++ code following STL, OOPS, and clean code principles.</li>
+                        <li>Migrated blocking RPC to asynchronous RPC, reducing UI thread blocking and improving responsiveness under load.</li>
+                        <li>Developed multithreaded C++ components using atomics and lock-free techniques, improving throughput in concurrent workflows.</li>
+                        <li>Diagnosed and resolved production crashes via WinDBG and dump analysis, improving client stability across releases.</li>
+                        <li>Automated regression workflows using PyTest, reducing manual testing effort by 25%.</li>
+                        <li>Delivered optimized modules using modern C++ (STL, RAII, concurrency primitives).</li>
                     </ul>
                 </div>
 
                 <div class="experience-item">
                     <div class="experience-header">
                         <div class="experience-role">
-                            Software Engineering Intern @ <span class="experience-company">Zscaler</span>
+                            Software Engineer Intern @ <span class="experience-company">Zscaler</span>
                         </div>
                         <div class="experience-date">February 2023 — August 2023</div>
                     </div>
                     <ul class="experience-description">
-                        <li>Increased unit test coverage from 10% to 35% using Google Test (GTest).</li>
-                        <li>Contributed to Windows UI development using C#, WPF, and XAML.</li>
-                        <li>Gained hands-on experience with Windows APIs, networking, and async programming models.</li>
+                        <li>Increased unit test coverage from 10% to 35% using GTest for C++ codebase.</li>
+                        <li>Built Windows UI components using C#, WPF, XAML.</li>
+                        <li>Worked with Windows APIs and asynchronous programming models in C#.</li>
                     </ul>
                 </div>
             </section>
@@ -189,24 +185,16 @@
                         <span>C</span>
                     </div>
                     <div class="skill-icon">
-                        <i class="devicon-csharp-plain colored" style="font-size: 40px;"></i>
-                        <span>C#</span>
-                    </div>
-                    <div class="skill-icon">
                         <i class="devicon-python-plain colored" style="font-size: 40px;"></i>
                         <span>Python</span>
                     </div>
                     <div class="skill-icon">
-                        <i class="devicon-microsoftsqlserver-plain colored" style="font-size: 40px;"></i>
-                        <span>SQL</span>
+                        <i class="devicon-java-plain colored" style="font-size: 40px;"></i>
+                        <span>Java</span>
                     </div>
                     <div class="skill-icon">
-                        <i class="devicon-visualstudio-plain colored" style="font-size: 40px;"></i>
-                        <span>VS</span>
-                    </div>
-                    <div class="skill-icon">
-                        <i class="devicon-vscode-plain colored" style="font-size: 40px;"></i>
-                        <span>VS Code</span>
+                        <i class="devicon-csharp-plain colored" style="font-size: 40px;"></i>
+                        <span>C#</span>
                     </div>
                     <div class="skill-icon">
                         <i class="devicon-cmake-plain colored" style="font-size: 40px;"></i>
@@ -217,89 +205,109 @@
                         <span>Git</span>
                     </div>
                     <div class="skill-icon">
-                        <i class="devicon-github-original" style="font-size: 40px; color: var(--text-primary);"></i>
-                        <span>GitHub</span>
+                        <i class="devicon-visualstudio-plain colored" style="font-size: 40px;"></i>
+                        <span>VS</span>
+                    </div>
+                    <div class="skill-icon">
+                        <i class="devicon-vscode-plain colored" style="font-size: 40px;"></i>
+                        <span>VS Code</span>
+                    </div>
+                    <div class="skill-icon">
+                        <i class="devicon-sqlite-plain colored" style="font-size: 40px;"></i>
+                        <span>SQLite</span>
+                    </div>
+                    <div class="skill-icon">
+                        <i class="devicon-jenkins-line colored" style="font-size: 40px;"></i>
+                        <span>Jenkins</span>
                     </div>
                     <div class="skill-icon">
                         <i class="devicon-windows11-original colored" style="font-size: 40px;"></i>
                         <span>Windows</span>
                     </div>
                     <div class="skill-icon">
-                        <i class="devicon-dotnetcore-plain colored" style="font-size: 40px;"></i>
-                        <span>WPF/.NET</span>
-                    </div>
-                    <div class="skill-icon">
                         <i class="devicon-pytest-plain colored" style="font-size: 40px;"></i>
-                        <span>Pytest</span>
+                        <span>PyTest</span>
                     </div>
                 </div>
 
                 <!-- Text Skills -->
                 <div class="mt-lg">
                     <div class="skill-category">
-                        <div class="skill-label">Build Systems</div>
-                        <div class="skill-items">
-                            <span class="skill-tag">MSVC</span>
-                            <span class="skill-tag">CMake</span>
-                            <span class="skill-tag">Vcpkg</span>
-                            <span class="skill-tag">Jenkins</span>
-                            <span class="skill-tag">InstallBuilder</span>
-                            <span class="skill-tag">Git</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category mt-md">
-                        <div class="skill-label">Windows & Systems</div>
+                        <div class="skill-label">Systems & Low-Level</div>
                         <div class="skill-items">
                             <span class="skill-tag">Win32 API</span>
                             <span class="skill-tag">COM</span>
-                            <span class="skill-tag">C++/WinRT</span>
-                            <span class="skill-tag">WinUI 3</span>
-                            <span class="skill-tag">WPF</span>
-                            <span class="skill-tag">XAML</span>
-                            <span class="skill-tag">IPC</span>
                             <span class="skill-tag">Multithreading</span>
+                            <span class="skill-tag">IPC</span>
+                            <span class="skill-tag">OS Internals</span>
                         </div>
                     </div>
 
                     <div class="skill-category mt-md">
-                        <div class="skill-label">Debugging & Analysis</div>
+                        <div class="skill-label">Backend & Networking</div>
+                        <div class="skill-items">
+                            <span class="skill-tag">REST APIs</span>
+                            <span class="skill-tag">WebSockets</span>
+                            <span class="skill-tag">TCP/IP</span>
+                            <span class="skill-tag">TLS/SSL</span>
+                            <span class="skill-tag">SQLite</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category mt-md">
+                        <div class="skill-label">Frameworks & Libraries</div>
+                        <div class="skill-items">
+                            <span class="skill-tag">STL</span>
+                            <span class="skill-tag">GTest</span>
+                            <span class="skill-tag">POCO</span>
+                            <span class="skill-tag">PyTest</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category mt-md">
+                        <div class="skill-label">Tools & Build Systems</div>
+                        <div class="skill-items">
+                            <span class="skill-tag">CMake</span>
+                            <span class="skill-tag">Vcpkg</span>
+                            <span class="skill-tag">MSVC</span>
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">Jenkins</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category mt-md">
+                        <div class="skill-label">Debugging & Profiling</div>
                         <div class="skill-items">
                             <span class="skill-tag">WinDBG</span>
                             <span class="skill-tag">ProcMon</span>
                             <span class="skill-tag">Wireshark</span>
-                            <span class="skill-tag">Fiddler</span>
+                            <span class="skill-tag">SysInternal Tools</span>
                         </div>
                     </div>
 
                     <div class="skill-category mt-md">
-                        <div class="skill-label">Core CS Fundamentals</div>
+                        <div class="skill-label">Core Concepts</div>
                         <div class="skill-items">
                             <span class="skill-tag">Data Structures & Algorithms</span>
-                            <span class="skill-tag">Operating Systems</span>
-                            <span class="skill-tag">Computer Architecture</span>
-                            <span class="skill-tag">Networking</span>
-                            <span class="skill-tag">Compilers</span>
+                            <span class="skill-tag">Low-Level Design</span>
                             <span class="skill-tag">System Design</span>
+                            <span class="skill-tag">Networking</span>
+                            <span class="skill-tag">Operating Systems</span>
                         </div>
                     </div>
                 </div>
             </section>
 
 
-            <!-- Interests & Contributions Section -->
-            <section class="section" id="interests">
-                <h2 class="section-title">Interests & Contributions</h2>
+            <!-- Achievements & Awards Section -->
+            <section class="section" id="achievements">
+                <h2 class="section-title">Achievements & Awards</h2>
                 <div class="experience-item">
-                    <p class="text-secondary">
-                        <strong>Open Source:</strong> Contributed bug fixes & unit tests to
-                        <a href="https://github.com/canonical/mir" target="_blank" class="text-link">Canonical/Mir</a>
-                        (display server).
-                    </p>
-                    <p class="text-secondary mt-md">
-                        <strong>Technical Interests:</strong> Tracking developments in Cryptography and DeFi protocols;
-                        active LeetCode practitioner focused on Hard/Medium DSA.
-                    </p>
+                    <ul class="experience-description">
+                        <li><strong>LeetCode Knight (Top 6%)</strong> — Peak rating 1900+</li>
+                        <li><strong>Open Source Contributor</strong> — Canonical Mir display server; worked on modern C++ improvements, bug fixes, and unit tests.</li>
+                        <li><strong>Zscaler Spot Award</strong> — Recognized for design contribution and delivering high-quality code for the notification framework.</li>
+                    </ul>
                 </div>
             </section>
 
@@ -309,15 +317,9 @@
                 <h2 class="section-title">Education</h2>
 
                 <div class="education-item">
-                    <div class="education-degree">Bachelor of Technology - Information Technology</div>
+                    <div class="education-degree">Bachelor of Technology — Information Technology</div>
                     <div class="education-school">Dr B R Ambedkar National Institute of Technology, Jalandhar</div>
-                    <div class="education-details">Aug 2019 - July 2023 | CGPA: 7.52</div>
-                </div>
-
-                <div class="education-item mt-md">
-                    <div class="education-degree">Senior Secondary School - Physics, Maths, Chemistry</div>
-                    <div class="education-school">Kendriya Vidyalaya Suranussi (CBSE)</div>
-                    <div class="education-details">Mar 2018 - Mar 2019 | Percentage: 92%</div>
+                    <div class="education-details">Aug 2019 — July 2023</div>
                 </div>
             </section>
 

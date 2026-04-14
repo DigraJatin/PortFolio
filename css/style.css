@@ -429,15 +429,16 @@ li {
     fill: none;
 }
 
-border-top: 1px solid var(--border-color);
-display: flex;
-align-items: center;
-justify-content: flex-start;
-/* Changed from center to natural start */
-gap: 15px;
-height: 60px;
-padding-left: 20px;
-/* Align with nav links padding usually around 15-20px */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    height: 60px;
+    padding-left: 20px;
 }
 
 .sidebar-footer a {
@@ -1034,10 +1035,11 @@ li code {
 }
 
 /* Hide Scrollbar but allow scrolling */
-scrollbar-width: none;
-/* Firefox */
--ms-overflow-style: none;
-/* IE/Edge */
+html {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
 }
 
 /* Hide scrollbar for Chrome/Safari/Opera */

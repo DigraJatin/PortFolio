@@ -21,7 +21,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">Jatin</div>
-                <div class="sidebar-subtitle">Software Engineer</div>
+                <div class="sidebar-subtitle">C++ Systems Engineer</div>
             </div>
 
             <nav>
@@ -80,8 +80,10 @@
                     <span class="skill-tag">Atomics</span>
                 </div>
                 <p class="project-description">
-                    Implemented a multi-threaded task scheduler with a thread pool and task queue.
-                    Designed synchronization using mutexes and condition variables to avoid race conditions.
+                    A thread-pool task scheduler with priority-based scheduling (4-level priority queue),
+                    processing 40K+ tasks/sec with 3.75× speedup on 4 cores. Features lock-based synchronization
+                    (mutexes, condition variables, atomics) with sub-microsecond submission latency (~0.41 µs/task),
+                    graceful shutdown with deadlock-free teardown, RAII resource management, and polymorphic task execution.
                 </p>
                 <div class="project-links">
                     <a href="https://github.com/DigraJatin/Concurrent-task-scheduler" target="_blank" class="btn">View
@@ -107,55 +109,6 @@
             </article>
 
             <article class="project-item">
-                <h3 class="project-title">Custom Memory Allocator</h3>
-                <div class="project-tech">
-                    <span class="skill-tag">C++</span>
-                    <span class="skill-tag">Memory Management</span>
-                    <span class="skill-tag">Win32</span>
-                </div>
-                <p class="project-description">
-                    A custom memory allocator implementation featuring pool allocation,
-                    free-list management, and memory debugging utilities. Designed for
-                    high-performance applications.
-                </p>
-                <div class="project-links">
-                    <a href="https://github.com/DigraJatin" target="_blank" class="btn">View Source</a>
-                </div>
-            </article>
-
-            <article class="project-item">
-                <h3 class="project-title">Process Monitor Lite</h3>
-                <div class="project-tech">
-                    <span class="skill-tag">C++</span>
-                    <span class="skill-tag">Win32 API</span>
-                    <span class="skill-tag">ETW</span>
-                </div>
-                <p class="project-description">
-                    A lightweight process monitoring tool built with ETW (Event Tracing
-                    for Windows). Captures process creation/termination events and DLL loads.
-                </p>
-                <div class="project-links">
-                    <a href="https://github.com/DigraJatin" target="_blank" class="btn">View Source</a>
-                </div>
-            </article>
-
-            <article class="project-item">
-                <h3 class="project-title">CMake Project Template</h3>
-                <div class="project-tech">
-                    <span class="skill-tag">CMake</span>
-                    <span class="skill-tag">Vcpkg</span>
-                    <span class="skill-tag">C++</span>
-                </div>
-                <p class="project-description">
-                    A modern CMake project template with Vcpkg package management,
-                    GTest integration, and CI/CD workflows. Starting point for C++ projects.
-                </p>
-                <div class="project-links">
-                    <a href="https://github.com/DigraJatin" target="_blank" class="btn">View Source</a>
-                </div>
-            </article>
-
-            <article class="project-item">
                 <h3 class="project-title">This Portfolio Website</h3>
                 <div class="project-tech">
                     <span class="skill-tag">HTML</span>
@@ -164,10 +117,10 @@
                 </div>
                 <p class="project-description">
                     A minimal, hand-crafted portfolio built without frameworks.
-                    Features GitHub-style design, markdown blog rendering, and activity heatmaps.
+                    Features GitHub-style design, markdown blog rendering, and dark/light theme support.
                 </p>
                 <div class="project-links">
-                    <a href="https://github.com/DigraJatin" target="_blank" class="btn">View Source</a>
+                    <a href="https://github.com/DigraJatin/PortFolio" target="_blank" class="btn">View Source</a>
                 </div>
             </article>
         </main>

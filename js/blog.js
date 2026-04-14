@@ -28,30 +28,7 @@ const blogIndex = {
                 slug: 'understanding-move-semantics',
                 title: 'Understanding Move Semantics in Modern C++',
                 date: '2024-12-15',
-                excerpt: 'A deep dive into move semantics, rvalue references, and how they improve performance in C++11 and beyond.'
-            },
-            {
-                slug: 'smart-pointers-guide',
-                title: 'A Practical Guide to Smart Pointers',
-                date: '2024-11-20',
-                excerpt: 'When to use unique_ptr, shared_ptr, and weak_ptr - with real-world examples.'
-            }
-        ]
-    },
-    'systems': {
-        name: 'Systems Programming',
-        posts: [
-            {
-                slug: 'windows-debugging-with-windbg',
-                title: 'Windows Debugging with WinDBG',
-                date: '2024-12-01',
-                excerpt: 'Essential WinDBG commands and techniques for debugging Windows applications and crash dumps.'
-            },
-            {
-                slug: 'understanding-windows-processes',
-                title: 'Understanding Windows Process Architecture',
-                date: '2024-10-15',
-                excerpt: 'How processes work on Windows: from creation to termination.'
+                excerpt: 'A deep dive into lvalues, rvalues, move semantics, rvalue references, and std::move in C++11 and beyond.'
             }
         ]
     }
